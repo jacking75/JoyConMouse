@@ -33,13 +33,14 @@ try {
 
     $out     = Join-Path $repoRoot 'artifacts\store'
     $payload = Join-Path $out 'payload'
-    $build   = Join-Path $out 'build\'
     if (Test-Path $payload) { Remove-Item $payload -Recurse -Force }
     New-Item -ItemType Directory -Force -Path $out | Out-Null
 
     # 1. Store 빌드 게시(self-contained, 폴더)
+    #    PackagingBuild=true 면 bins\ 대신 .NET 기본 폴더(bin\, obj\ 아래 TFM·RID별)를 쓴다.
+    #    출력 폴더를 명령줄 전역 속성으로 강제하면 참조 프로젝트의 RID·비RID 빌드가 같은 폴더를 공유해 서로 파일을 지운다.
     & dotnet publish $appProj -c Release -r win-x64 --self-contained true -p:PublishReadyToRun=true `
-        -p:StoreBuild=true "-p:OutputPath=$build" -o $payload
+        -p:StoreBuild=true -p:PackagingBuild=true -o $payload
     if ($LASTEXITCODE -ne 0) { throw "dotnet publish 실패" }
     foreach ($f in 'JoyConMouse.exe', 'SDL3.dll') {
         if (-not (Test-Path (Join-Path $payload $f))) { throw "$f 가 없습니다." }

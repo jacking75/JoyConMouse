@@ -33,10 +33,11 @@ try {
     if (Test-Path $outDir) { Remove-Item $outDir -Recurse -Force }
     if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
 
-    # 3. 게시. 중간 빌드 출력은 일반 빌드 폴더(bins\)와 섞이지 않게 artifacts\build 로 보낸다.
-    $buildDir = Join-Path $artifacts 'build\'
+    # 3. 게시. PackagingBuild=true 면 bins\ 대신 .NET 기본 폴더(bin\, obj\ 아래 TFM·RID별)를 써서
+    #    일반 빌드(bins\)와 섞이지 않는다. 출력 폴더를 명령줄 전역 속성으로 강제하면 참조 프로젝트의
+    #    RID·비RID 빌드가 같은 폴더를 공유해 서로 파일을 지우므로 그렇게 하지 않는다.
     & dotnet publish src/JoyConMouse.App/JoyConMouse.App.csproj -c Release -r win-x64 --self-contained true `
-        -p:PublishReadyToRun=true "-p:OutputPath=$buildDir" -o $outDir
+        -p:PublishReadyToRun=true -p:PackagingBuild=true -o $outDir
     if ($LASTEXITCODE -ne 0) { throw "dotnet publish 실패" }
 
     # 4. 산출물 확인: exe 이름 규칙(확장자 앞 본 이름에 점 없음)과 필수 파일

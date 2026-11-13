@@ -6,9 +6,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <!-- 빌드 출력은 저장소 루트 bins\ 에 모으고 .NET 버전 하위 폴더는 만들지 않는다. -->
-    <OutputPath>$(MSBuildThisFileDirectory)..\..\bins\</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <!-- 일반 빌드 출력은 저장소 루트 bins\ 에 모으고 .NET 버전 하위 폴더는 만들지 않는다.
+         게시 스크립트(-p:PackagingBuild=true)는 .NET 기본 폴더를 써서 일반 빌드·RID 빌드와 섞이지 않게 한다. -->
+    <OutputPath Condition="'$(PackagingBuild)' != 'true'">$(MSBuildThisFileDirectory)..\..\bins\</OutputPath>
+    <AppendTargetFrameworkToOutputPath Condition="'$(PackagingBuild)' != 'true'">false</AppendTargetFrameworkToOutputPath>
     <RootNamespace>JoyConMouse.App</RootNamespace>
     <AssemblyName>JoyConMouse</AssemblyName>
     <!-- 배포 버전. build/publish.ps1 이 이 값을 읽어 zip 이름에 쓴다. -->
