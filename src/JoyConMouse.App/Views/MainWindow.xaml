@@ -42,8 +42,12 @@
                     <Button Content="{StaticResource Button.Diagnostics}" Command="{Binding OpenDiagnosticsCommand}" />
                 </StackPanel>
                 <Ellipse Width="12" Height="12" Fill="{Binding StateBrush}" VerticalAlignment="Center" Margin="0,0,10,0" />
-                <TextBlock Text="{Binding BatteryText}" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="12,0,16,0"
-                           Foreground="#FF374151" />
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,16,0"
+                            Visibility="{Binding HasActiveBattery, Converter={StaticResource BoolToVis}}"
+                            ToolTip="{StaticResource Battery.Hint}">
+                    <views:BatteryIndicator Percent="{Binding BatteryPercent}" Charging="{Binding BatteryCharging}" Margin="0,0,6,0" />
+                    <TextBlock Text="{Binding BatteryText}" VerticalAlignment="Center" Foreground="#FF374151" />
+                </StackPanel>
                 <TextBlock Text="{Binding StateText}" VerticalAlignment="Center" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
                            ToolTip="{Binding StateText}" />
             </DockPanel>
@@ -88,7 +92,10 @@
                                     <TextBlock Text="{StaticResource Device.Active}" Margin="8,0,0,0" Foreground="#FF2EA043"
                                                Visibility="{Binding IsActive, Converter={StaticResource BoolToVis}}" />
                                 </StackPanel>
-                                <TextBlock Text="{Binding Battery}" Style="{StaticResource Caption}" />
+                                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                    <views:BatteryIndicator Percent="{Binding BatteryPercent}" Charging="{Binding Charging}" Margin="0,0,6,0" />
+                                    <TextBlock Text="{Binding Battery}" Style="{StaticResource Caption}" VerticalAlignment="Center" />
+                                </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

@@ -17,11 +17,11 @@
     <!-- 배터리 -->
     <sys:String x:Key="Battery.Label">배터리: {0}</sys:String>
     <sys:String x:Key="Battery.Unknown">알 수 없음</sys:String>
-    <sys:String x:Key="Battery.Critical">매우 낮음</sys:String>
-    <sys:String x:Key="Battery.Low">낮음</sys:String>
-    <sys:String x:Key="Battery.Medium">보통</sys:String>
-    <sys:String x:Key="Battery.High">높음</sys:String>
+    <sys:String x:Key="Battery.Hint">조이콘은 배터리를 25% 단위(0·25·50·75·100%)로만 알려 줍니다.</sys:String>
     <sys:String x:Key="Battery.Charging">{0} (충전 중)</sys:String>
+    <sys:String x:Key="Battery.Charged">{0} (충전 완료)</sys:String>
+    <sys:String x:Key="Battery.LowNotice">{0} 배터리 {1}% — 곧 충전이 필요합니다.</sys:String>
+    <sys:String x:Key="Battery.EmptyNotice">{0} 배터리가 거의 없습니다. 곧 꺼질 수 있습니다.</sys:String>
 
     <!-- 버튼·제목 -->
     <sys:String x:Key="Button.Pause">일시정지</sys:String>

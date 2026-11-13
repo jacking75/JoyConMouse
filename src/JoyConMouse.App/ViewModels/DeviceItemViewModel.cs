@@ -10,6 +10,8 @@ public sealed class DeviceItemViewModel : ObservableObject
     private bool _isActive;
     private bool _emphasizeId;
     private string _battery = "";
+    private int _batteryPercent = -1;
+    private bool _charging;
 
     public DeviceItemViewModel(DeviceKey key)
     {
@@ -29,10 +31,16 @@ public sealed class DeviceItemViewModel : ObservableObject
 
     public string Battery { get => _battery; set => SetProperty(ref _battery, value); }
 
+    public int BatteryPercent { get => _batteryPercent; private set => SetProperty(ref _batteryPercent, value); }
+
+    public bool Charging { get => _charging; private set => SetProperty(ref _charging, value); }
+
     public void Update(DeviceInfo info, bool active, bool emphasize)
     {
         IsActive = active;
         EmphasizeId = emphasize;
-        Battery = Strings.Format("Battery.Label", Strings.Battery(info));
+        Battery = Strings.Battery(info);
+        BatteryPercent = info.BatteryPercent;
+        Charging = info.Power == PowerSource.Charging;
     }
 }

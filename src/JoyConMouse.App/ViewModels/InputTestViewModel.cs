@@ -151,7 +151,7 @@ public sealed class InputTestViewModel : ObservableObject
             ? Strings.Get("Test.NoDevice")
             : Strings.Format("Test.Device", Strings.Side(key.Side), ShortId(key), info.Name,
                 Strings.Get(info.HasSerial ? "Test.Yes" : "Test.No"), info.Connection,
-                Strings.Battery(info) + (info.BatteryPercent >= 0 ? $" ({info.BatteryPercent}%)" : ""));
+                Strings.Battery(info));
         OnPropertyChanged(nameof(HasDevice));
 
         if (s.Input is not { } input)

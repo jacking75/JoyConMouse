@@ -32,6 +32,9 @@ public sealed class MainViewModel : ObservableObject
     private DeviceKey? _lastActive;
     private string _stateText = "";
     private string _batteryText = "";
+    private int _batteryPercent = -1;
+    private bool _batteryCharging;
+    private bool _hasActiveBattery;
     private Brush _stateBrush = OffBrush;
     private string? _notice;
     private int _selectedTabIndex;
@@ -167,6 +170,12 @@ public sealed class MainViewModel : ObservableObject
     public string StateText { get => _stateText; private set => SetProperty(ref _stateText, value); }
 
     public string BatteryText { get => _batteryText; private set => SetProperty(ref _batteryText, value); }
+
+    public int BatteryPercent { get => _batteryPercent; private set => SetProperty(ref _batteryPercent, value); }
+
+    public bool BatteryCharging { get => _batteryCharging; private set => SetProperty(ref _batteryCharging, value); }
+
+    public bool HasActiveBattery { get => _hasActiveBattery; private set => SetProperty(ref _hasActiveBattery, value); }
 
     public Brush StateBrush { get => _stateBrush; private set => SetProperty(ref _stateBrush, value); }
 
@@ -335,7 +344,10 @@ public sealed class MainViewModel : ObservableObject
             };
         }
 
-        BatteryText = s.ActiveDevice is null ? "" : Strings.Format("Battery.Label", Strings.Battery(s.ActiveInfo));
+        BatteryText = s.ActiveDevice is null ? "" : Strings.Battery(s.ActiveInfo);
+        BatteryPercent = s.ActiveInfo?.BatteryPercent ?? -1;
+        BatteryCharging = s.ActiveInfo?.Power == PowerSource.Charging;
+        HasActiveBattery = s.ActiveDevice is not null;
     }
 
     private ProfileViewModel CreateProfileVm(JoyConSide side)

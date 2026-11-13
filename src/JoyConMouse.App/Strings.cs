@@ -16,14 +16,20 @@ public static class Strings
 
     public static string Action(MouseAction a) => Get("Action." + a);
 
+    /// <summary>배터리 표시 문구. 예: "75%", "75% (충전 중)", "알 수 없음". 조이콘은 25% 단위로만 보고한다.</summary>
     public static string Battery(DeviceInfo? d)
     {
-        if (d is null)
+        if (d is null || d.BatteryPercent < 0)
         {
             return Get("Battery.Unknown");
         }
 
-        string level = Get("Battery." + d.Battery);
-        return d.Power == PowerSource.Charging ? Format("Battery.Charging", level) : level;
+        string value = $"{d.BatteryPercent}%";
+        return d.Power switch
+        {
+            PowerSource.Charging => Format("Battery.Charging", value),
+            PowerSource.Charged => Format("Battery.Charged", value),
+            _ => value,
+        };
     }
 }

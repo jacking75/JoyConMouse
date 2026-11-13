@@ -17,6 +17,7 @@ public sealed partial class TrayIconService : IDisposable
     private readonly ContextMenuStrip _menu;
     private readonly ToolStripMenuItem _statusItem, _pauseItem, _devicesItem, _startupItem;
     private readonly Dictionary<string, (Icon Icon, nint Handle)> _icons = [];
+    private readonly Dictionary<DeviceKey, int> _batteryNotified = [];
     private readonly Action _openSettings;
     private readonly Action<DeviceKey> _setActive;
     private EngineStatus _status = EngineStatus.Initial;
@@ -81,8 +82,11 @@ public sealed partial class TrayIconService : IDisposable
                 _ => "off",
             };
         _icon.Icon = GetIcon(kind);
-        string text = $"JoyConMouse — {StatusLine(s)}";
+        string battery = s.ActiveInfo is { } ai ? $" · 🔋 {Strings.Battery(ai)}" : "";
+        string text = $"JoyConMouse — {StatusLine(s)}{battery}";
         _icon.Text = text.Length > 127 ? text[..127] : text;
+
+        NotifyLowBattery(s);
 
         // 활성 장치 끊김·재연결 안내(30초에 한 번)
         if (s.ActiveDevice is { } key && prev.ActiveDevice == key)
@@ -112,6 +116,40 @@ public sealed partial class TrayIconService : IDisposable
     public void ShowBalloon(string text, ToolTipIcon icon = ToolTipIcon.Info)
     {
         _icon.ShowBalloonTip(5000, Strings.Get("Tray.Title"), text, icon);
+    }
+
+    /// <summary>
+    /// 배터리 부족 알림. 장치마다 25% 이하에서 한 번, 0%에서 한 번 알린다.
+    /// 충전을 시작하거나 50% 이상으로 오르면 다시 알릴 수 있게 초기화한다.
+    /// </summary>
+    private void NotifyLowBattery(EngineStatus s)
+    {
+        foreach (var d in s.Devices)
+        {
+            if (d.BatteryPercent < 0)
+            {
+                continue;
+            }
+
+            if (d.Power is PowerSource.Charging or PowerSource.Charged or PowerSource.Wired || d.BatteryPercent >= 50)
+            {
+                _batteryNotified.Remove(d.Key);
+                continue;
+            }
+
+            bool notified = _batteryNotified.TryGetValue(d.Key, out int lastLevel);
+            string side = Strings.Side(d.Key.Side);
+            if (d.BatteryPercent == 0 && (!notified || lastLevel > 0))
+            {
+                _batteryNotified[d.Key] = 0;
+                ShowBalloon(Strings.Format("Battery.EmptyNotice", side), ToolTipIcon.Warning);
+            }
+            else if (d.BatteryPercent > 0 && d.BatteryPercent <= 25 && !notified)
+            {
+                _batteryNotified[d.Key] = d.BatteryPercent;
+                ShowBalloon(Strings.Format("Battery.LowNotice", side, d.BatteryPercent), ToolTipIcon.Warning);
+            }
+        }
     }
 
     private void NotifyConnection(string text)
