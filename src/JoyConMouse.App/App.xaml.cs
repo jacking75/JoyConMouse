@@ -69,6 +69,7 @@ public partial class App : Application
         _loop.Post(new EngineRequest.ApplyProfile(JoyConSide.Left, s.Left));
         _loop.Post(new EngineRequest.ApplyProfile(JoyConSide.Right, s.Right));
         _loop.Post(new EngineRequest.SetSavedDevice(s.LastActiveDevice));
+        _loop.Post(new EngineRequest.SetKeepAlive(s.KeepConnected));
         if (s.StartPaused)
         {
             _loop.Post(new EngineRequest.SetPause(PauseReason.User, true));

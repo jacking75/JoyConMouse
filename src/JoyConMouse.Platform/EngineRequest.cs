@@ -25,5 +25,8 @@ public abstract record EngineRequest
     /// <summary>켜면 활성 장치의 실시간 입력(<see cref="ActiveInput"/>)을 20Hz 로 발행한다. 연결 확인 화면용.</summary>
     public sealed record SetMonitoring(bool On) : EngineRequest;
 
+    /// <summary>쓰지 않는 조이콘에 주기적으로 연결 유지 신호를 보낼지.</summary>
+    public sealed record SetKeepAlive(bool On) : EngineRequest;
+
     public sealed record Shutdown(ManualResetEventSlim Done) : EngineRequest;
 }

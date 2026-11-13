@@ -46,6 +46,7 @@ public static class SettingsSerializer
                 ? new JsonObject { ["side"] = k.Side.ToString(), ["id"] = k.Id }
                 : null,
             ["startPaused"] = s.StartPaused,
+            ["keepConnected"] = s.KeepConnected,
             ["trayNoticeShown"] = s.TrayNoticeShown,
             ["profiles"] = new JsonObject
             {
@@ -90,6 +91,7 @@ public static class SettingsSerializer
                 Version = version,
                 LastActiveDevice = ReadDevice(root["lastActiveDevice"] as JsonObject, warnings),
                 StartPaused = GetBool(root, "startPaused") ?? false,
+                KeepConnected = GetBool(root, "keepConnected") ?? true,
                 TrayNoticeShown = GetBool(root, "trayNoticeShown") ?? false,
                 Left = ReadProfile(profiles?["Left"] as JsonObject, JoyConSide.Left, warnings),
                 Right = ReadProfile(profiles?["Right"] as JsonObject, JoyConSide.Right, warnings),

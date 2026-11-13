@@ -13,6 +13,9 @@ public sealed record AppSettings
 
     public bool StartPaused { get; init; }
 
+    /// <summary>쓰지 않는 조이콘에 주기적으로 신호를 보내 연결이 끊기지 않게 할지.</summary>
+    public bool KeepConnected { get; init; } = true;
+
     /// <summary>창을 닫을 때 "트레이에서 계속 실행" 안내를 이미 보여 주었는지.</summary>
     public bool TrayNoticeShown { get; init; }
 

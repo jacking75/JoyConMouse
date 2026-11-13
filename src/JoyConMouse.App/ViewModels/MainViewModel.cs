@@ -82,6 +82,23 @@ public sealed class MainViewModel : ObservableObject
 
     public InputTestViewModel InputTest { get; }
 
+    /// <summary>쓰지 않을 때도 연결 유지(주기적 신호). 바꾸면 즉시 적용하고 저장한다.</summary>
+    public bool KeepConnected
+    {
+        get => _settings.Current.KeepConnected;
+        set
+        {
+            if (value == _settings.Current.KeepConnected)
+            {
+                return;
+            }
+
+            _settings.Update(s => s with { KeepConnected = value });
+            _loop.Post(new EngineRequest.SetKeepAlive(value));
+            OnPropertyChanged();
+        }
+    }
+
     public int SelectedTabIndex
     {
         get => _selectedTabIndex;

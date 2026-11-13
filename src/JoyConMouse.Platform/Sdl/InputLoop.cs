@@ -17,6 +17,13 @@ public sealed class InputLoop : IDisposable
     private static readonly TimeSpan IdleTick = TimeSpan.FromMilliseconds(20);
     private static readonly long PressedPublishInterval = Stopwatch.Frequency / 20; // 20Hz
     private static readonly long HeartbeatInterval = Stopwatch.Frequency;           // 1초
+    private static readonly long ActivitySampleInterval = Stopwatch.Frequency / 2;  // 0.5초
+
+    /// <summary>이 시간 동안 입력이 없으면 연결 유지 신호를 보내기 시작한다(사용 중에는 보내지 않는다).</summary>
+    private static readonly long KeepAliveIdle = Stopwatch.Frequency * 30;
+
+    /// <summary>연결 유지 신호 간격.</summary>
+    private static readonly long KeepAliveInterval = Stopwatch.Frequency * 20;
 
     private readonly ConcurrentQueue<EngineRequest> _requests = new();
     private readonly IMouseSink _sink;
@@ -155,6 +162,8 @@ public sealed class InputLoop : IDisposable
 
         DeviceKey? saved = null;
         bool monitoring = false;
+        bool keepAlive = false;
+        long lastActivitySample = 0;
         bool devicesChanged = true;
         bool needsChoice = false;
         long lastTick = 0, lastPublish = 0, lastDevicesBuilt = 0;
@@ -196,7 +205,8 @@ public sealed class InputLoop : IDisposable
                         if (gone.Key is { } key)
                         {
                             engine.OnDeviceDisconnected(key, now, output);
-                            Log.Info($"연결 해제: {gone.Name} 키={key.Id}");
+                            double idleSec = gone.LastActivity == 0 ? 0 : (double)(now - gone.LastActivity) / Stopwatch.Frequency;
+                            Log.Info($"연결 해제: {gone.Name} 키={key.Id} 마지막 입력 후 {idleSec:F0}초 연결유지={(keepAlive ? "켬" : "끔")}");
                         }
 
                         gone.Dispose();
@@ -236,6 +246,10 @@ public sealed class InputLoop : IDisposable
                             break;
                         case EngineRequest.SetMonitoring m:
                             monitoring = m.On;
+                            break;
+                        case EngineRequest.SetKeepAlive k:
+                            keepAlive = k.On;
+                            Log.Info($"연결 유지: {(k.On ? "켬" : "끔")}");
                             break;
                     }
                 }
@@ -294,6 +308,26 @@ public sealed class InputLoop : IDisposable
                 }
 
                 pendingDone.Clear();
+
+                // 4-1. 입력 활동 표본과 연결 유지 신호(쓰지 않는 조이콘에만)
+                if (tSnap - lastActivitySample >= ActivitySampleInterval)
+                {
+                    lastActivitySample = tSnap;
+                    foreach (var p in pads.Values)
+                    {
+                        p.SampleActivity(tSnap);
+                        if (keepAlive && tSnap - p.LastActivity >= KeepAliveIdle && tSnap - p.LastKeepAlive >= KeepAliveInterval)
+                        {
+                            bool first = p.LastKeepAlive < p.LastActivity;
+                            p.LastKeepAlive = tSnap;
+                            bool ok = p.SendKeepAlive();
+                            if (first || !ok)
+                            {
+                                Log.Info($"연결 유지 신호{(first ? " 시작" : "")}: {p.Name} {(ok ? "성공" : "실패: " + SdlNative.GetError())}");
+                            }
+                        }
+                    }
+                }
 
                 // 5. 상태 발행
                 long t = Stopwatch.GetTimestamp();

@@ -96,7 +96,9 @@
                 <TextBlock DockPanel.Dock="Top" Text="{StaticResource Title.NoDevices}" Style="{StaticResource Caption}" Margin="0,6,0,0"
                            Visibility="{Binding HasNoDevices, Converter={StaticResource BoolToVis}}" />
                 <Button DockPanel.Dock="Top" Content="{StaticResource Button.Bluetooth}" Command="{Binding OpenBluetoothCommand}"
-                        HorizontalAlignment="Left" Margin="0,8,0,8" />
+                        HorizontalAlignment="Left" Margin="0,8,0,6" />
+                <CheckBox DockPanel.Dock="Top" Content="{StaticResource Option.KeepConnected}" IsChecked="{Binding KeepConnected}"
+                          ToolTip="{StaticResource Option.KeepConnectedHint}" Margin="0,0,0,8" />
                 <views:JoyConDiagram Side="{Binding DiagramSide}" Pressed="{Binding DiagramPressed}" Margin="8" MaxHeight="320" />
             </DockPanel>
 

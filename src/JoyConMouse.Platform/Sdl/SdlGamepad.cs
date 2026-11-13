@@ -81,6 +81,50 @@ public sealed unsafe class SdlGamepad : IDisposable
 
     public SdlConnectionState GetConnectionState() => SdlNative.SDL_GetGamepadConnectionState(_handle);
 
+    /// <summary>마지막으로 버튼·스틱 입력이 바뀐 시각(Stopwatch tick). 연결 유지 판단에 쓴다.</summary>
+    public long LastActivity { get; private set; }
+
+    /// <summary>마지막으로 연결 유지 신호를 보낸 시각(Stopwatch tick).</summary>
+    public long LastKeepAlive { get; set; }
+
+    private uint _lastButtons;
+    private short[] _lastAxes = [];
+
+    /// <summary>버튼·축 상태를 이전 표본과 비교해 바뀌었으면 <see cref="LastActivity"/> 를 갱신한다.</summary>
+    public void SampleActivity(long now)
+    {
+        uint buttons = GetGamepadButtonBits();
+        short[] axes = GetGamepadAxes();
+        bool changed = LastActivity == 0 || buttons != _lastButtons || axes.Length != _lastAxes.Length;
+        for (int i = 0; !changed && i < axes.Length; i++)
+        {
+            changed = Math.Abs(axes[i] - _lastAxes[i]) > 2000; // 미세한 축 흔들림은 무시
+        }
+
+        if (changed)
+        {
+            LastActivity = now;
+            _lastButtons = buttons;
+            _lastAxes = axes;
+        }
+    }
+
+    /// <summary>
+    /// 조이콘에 연결 유지 신호를 보낸다. 플레이어 번호를 p ↔ p+8 로 바꿔 SDL 이 플레이어 LED 명령을 보내게 한다
+    /// (LED 패턴은 8개 주기라 눈에 보이는 변화는 없다. 같은 번호를 다시 지정하면 SDL 이 아무것도 보내지 않는다).
+    /// 명령 응답을 기다리느라 보통 수십 ms 동안 블로킹되므로 사용하지 않을 때만 호출한다.
+    /// </summary>
+    public bool SendKeepAlive()
+    {
+        int p = SdlNative.SDL_GetGamepadPlayerIndex(_handle);
+        if (p < 0)
+        {
+            p = 0;
+        }
+
+        return SdlNative.SDL_SetGamepadPlayerIndex(_handle, p >= 8 ? p - 8 : p + 8);
+    }
+
     /// <summary>게임패드 매핑을 거친 버튼 비트(SdlGamepadButton 순서).</summary>
     public uint GetGamepadButtonBits()
     {

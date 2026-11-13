@@ -77,6 +77,13 @@ public static unsafe partial class SdlNative
     [LibraryImport(Lib)]
     public static partial SdlConnectionState SDL_GetGamepadConnectionState(nint gamepad);
 
+    [LibraryImport(Lib)]
+    public static partial int SDL_GetGamepadPlayerIndex(nint gamepad);
+
+    [LibraryImport(Lib)]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SDL_SetGamepadPlayerIndex(nint gamepad, int playerIndex);
+
     /// <summary>SDL 이 소유한 UTF-8 문자열을 복사한다. NULL 이면 null.</summary>
     public static string? PtrToString(nint p) => p == 0 ? null : Marshal.PtrToStringUTF8(p);
 

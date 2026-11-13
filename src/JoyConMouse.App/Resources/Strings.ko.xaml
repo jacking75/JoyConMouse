@@ -38,6 +38,8 @@
     <sys:String x:Key="Side.LeftDevice">조이콘(L)</sys:String>
     <sys:String x:Key="Side.RightDevice">조이콘(R)</sys:String>
     <sys:String x:Key="Device.Active">사용 중</sys:String>
+    <sys:String x:Key="Option.KeepConnected">쓰지 않을 때도 연결 유지</sys:String>
+    <sys:String x:Key="Option.KeepConnectedHint">조이콘을 30초 이상 쓰지 않으면 20초마다 신호를 보내 연결이 끊기지 않게 합니다. 조이콘 배터리 사용이 조금 늘어납니다.</sys:String>
 
     <!-- 탭 -->
     <sys:String x:Key="Tab.Stick">감도</sys:String>
