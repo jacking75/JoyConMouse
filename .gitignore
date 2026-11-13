@@ -432,3 +432,5 @@ native/
 
 bins/
 TestResults/
+# VS 기본 규칙 [Ww][Ii][Nn]32/ 이 소스 폴더까지 무시하므로 예외로 둔다.
+!src/JoyConMouse.Platform/Win32/
