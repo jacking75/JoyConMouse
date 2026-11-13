@@ -13,7 +13,7 @@
     <RootNamespace>JoyConMouse.App</RootNamespace>
     <AssemblyName>JoyConMouse</AssemblyName>
     <!-- 배포 버전. build/publish.ps1 이 이 값을 읽어 zip 이름에 쓴다. -->
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Company>JoyConMouse</Company>
     <Product>JoyConMouse</Product>
     <NeutralLanguage>ko-KR</NeutralLanguage>
