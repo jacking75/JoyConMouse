@@ -13,6 +13,7 @@ param()
 
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
+. (Join-Path $PSScriptRoot 'common.ps1')
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 Push-Location $repoRoot
@@ -36,6 +37,9 @@ try {
     # 3. 게시. PackagingBuild=true 면 bins\ 대신 .NET 기본 폴더(bin\, obj\ 아래 TFM·RID별)를 써서
     #    일반 빌드(bins\)와 섞이지 않는다. 출력 폴더를 명령줄 전역 속성으로 강제하면 참조 프로젝트의
     #    RID·비RID 빌드가 같은 폴더를 공유해 서로 파일을 지우므로 그렇게 하지 않는다.
+    #    이전 게시(특히 Store 빌드)의 증분 상태가 남아 있으면 참조 프로젝트 출력이 지워져
+    #    CS0006/MSB3030 으로 실패하므로, 매번 깨끗한 상태에서 빌드한다.
+    Clear-ProjectBuildState $repoRoot
     & dotnet publish src/JoyConMouse.App/JoyConMouse.App.csproj -c Release -r win-x64 --self-contained true `
         -p:PublishReadyToRun=true -p:PackagingBuild=true -o $outDir
     if ($LASTEXITCODE -ne 0) { throw "dotnet publish 실패" }
