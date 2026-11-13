@@ -1,4 +1,5 @@
 {
+  "storeId": "9PGNHMMW87XW",
   "packageIdentityName": "jacking75.JoyConMouse",
   "publisher": "CN=E66A7C98-9426-41DB-9B55-AC993F05E1A3",
   "publisherDisplayName": "jacking75",
@@ -18,6 +19,7 @@
       "왼쪽·오른쪽 Joy-Con 모두 지원, 좌우 설정 따로 저장",
       "모든 버튼 기능 재지정, 연결 확인 화면",
       "트레이 상주, 시작 프로그램, 연결 끊김 알림",
+      "배터리 잔량 표시·부족 알림, 쓰지 않을 때도 연결 유지",
       "무료 오픈소스, 계정·구독·네트워크 통신 없음"
     ],
     "keywords": ["조이콘", "마우스", "한손 마우스", "게임패드 마우스", "Joy-Con"],
@@ -37,6 +39,7 @@
       "Left and right Joy-Con supported with separate settings",
       "Remap every button, built-in connection check",
       "System tray, start at sign-in, disconnect notifications",
+      "Battery level and low-battery alerts, stays connected when idle",
       "Free and open source, no account or network communication"
     ],
     "keywords": ["Joy-Con", "mouse", "one-handed mouse", "controller mouse", "gamepad mouse"],
