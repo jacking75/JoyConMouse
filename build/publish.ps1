@@ -55,6 +55,8 @@ try {
     if ($badExe) { throw "exe 이름 규칙 위반: $($badExe.Name -join ', ')" }
     # 단일 파일 게시라면 관리 어셈블리(.dll)는 exe 에 들어가고, 옆에는 네이티브 DLL 만 남는다.
     if (Test-Path (Join-Path $outDir 'JoyConMouse.dll')) { throw "단일 파일로 게시되지 않았습니다(JoyConMouse.dll 이 따로 있음)." }
+    # WPF 의 C++/CLI 어셈블리가 번들에 들어가면 실행 즉시 종료(BadImageFormatException)되므로 옆에 있어야 한다.
+    if (-not (Test-Path (Join-Path $outDir 'DirectWriteForwarder.dll'))) { throw "DirectWriteForwarder.dll 이 exe 옆에 없습니다(번들에 묶이면 실행되지 않음)." }
     # 디버그 기호는 배포본에 넣지 않는다.
     Get-ChildItem $outDir -Filter '*.pdb' | Remove-Item -Force
 

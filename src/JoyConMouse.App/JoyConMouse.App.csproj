@@ -56,6 +56,16 @@
     <EmbeddedResource Include="Assets\icon.png" LogicalName="JoyConMouse.icon.png" />
   </ItemGroup>
 
+  <!-- 단일 파일 게시: WPF 의 C++/CLI 혼합 모드 어셈블리는 번들 안에서 로드되지 않아
+       (BadImageFormatException, 창이 뜨기 전 종료) exe 에 묶지 않고 옆에 둔다. -->
+  <Target Name="KeepMixedModeAssembliesOutOfBundle" AfterTargets="ComputeResolvedFilesToPublishList" Condition="'$(PublishSingleFile)' == 'true'">
+    <ItemGroup>
+      <ResolvedFileToPublish Condition="'%(Filename)%(Extension)' == 'DirectWriteForwarder.dll' or '%(Filename)%(Extension)' == 'System.Printing.dll'">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
   <ItemGroup>
     <ProjectReference Include="..\JoyConMouse.Core\JoyConMouse.Core.csproj" />
     <ProjectReference Include="..\JoyConMouse.Platform\JoyConMouse.Platform.csproj" />
