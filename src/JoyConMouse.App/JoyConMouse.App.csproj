@@ -32,6 +32,14 @@
     <NoWarn>$(NoWarn);WFO0003</NoWarn>
   </PropertyGroup>
 
+  <!-- Microsoft Store(MSIX) 빌드: build/store-package.ps1 이 -p:StoreBuild=true 로 호출한다.
+       시작 프로그램 등록에 Windows StartupTask API 가 필요해 Windows SDK 대상 TFM 을 쓴다.
+       zip 배포용 일반 빌드에는 영향이 없다. -->
+  <PropertyGroup Condition="'$(StoreBuild)' == 'true'">
+    <TargetFramework>net11.0-windows10.0.19041.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);STORE</DefineConstants>
+  </PropertyGroup>
+
   <!-- WinForms 는 트레이(NotifyIcon)용으로만 쓴다. 전역 using 충돌을 막기 위해 WinForms 네임스페이스는 암시적 using 에서 뺀다. -->
   <ItemGroup>
     <Using Remove="System.Windows.Forms" />

@@ -40,7 +40,9 @@ public partial class App : Application
             return;
         }
 
-        bool trayStart = e.Args.Any(a => string.Equals(a, "--tray", StringComparison.OrdinalIgnoreCase));
+        bool trayStart = e.Args.Any(a => string.Equals(a, "--tray", StringComparison.OrdinalIgnoreCase))
+                         || StartupRegistration.LaunchedAtStartup();
+        _ = StartupRegistration.InitializeAsync();
         string version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "?";
         Log.Info($"앱 시작 v{version}{(trayStart ? " (--tray)" : "")}");
 

@@ -108,6 +108,9 @@
     <sys:String x:Key="Tray.Menu.Startup">시작 프로그램에 등록</sys:String>
     <sys:String x:Key="Tray.Menu.Diagnostics">진단 정보 내보내기</sys:String>
     <sys:String x:Key="Tray.Menu.Exit">종료</sys:String>
+    <sys:String x:Key="Startup.Unavailable">시작 프로그램 설정을 바꾸지 못했습니다.</sys:String>
+    <sys:String x:Key="Startup.DisabledByUser">시작 프로그램이 Windows에서 꺼져 있습니다. 작업 관리자의 [시작 앱]에서 JoyConMouse를 켜 주세요.</sys:String>
+    <sys:String x:Key="Startup.DisabledByPolicy">이 PC의 정책으로 시작 프로그램을 켤 수 없습니다.</sys:String>
     <sys:String x:Key="Tray.DiagnosticsSaved">진단 정보를 바탕화면에 저장했습니다: {0}</sys:String>
     <sys:String x:Key="Tray.DiagnosticsFailed">진단 정보를 저장하지 못했습니다: {0}</sys:String>
 

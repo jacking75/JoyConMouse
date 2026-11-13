@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- build/store-package.ps1 이 {{...}} 자리를 채운다. Publisher 는 Partner Center 계정 값이다. -->
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         IgnorableNamespaces="uap uap5 rescap">
+  <Identity Name="{{IdentityName}}" Publisher="CN=E66A7C98-9426-41DB-9B55-AC993F05E1A3"
+            Version="{{Version}}" ProcessorArchitecture="x64" />
+  <Properties>
+    <DisplayName>{{DisplayName}}</DisplayName>
+    <PublisherDisplayName>jacking75</PublisherDisplayName>
+    <Description>Use one Joy-Con as a one-handed wireless mouse.</Description>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Resources>
+    <Resource Language="ko-KR" />
+    <Resource Language="en-US" />
+  </Resources>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.22000.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+  <Applications>
+    <Application Id="JoyConMouse" Executable="JoyConMouse.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="{{DisplayName}}"
+                          Description="Use one Joy-Con as a one-handed wireless mouse."
+                          Square150x150Logo="Assets\Square150x150Logo.png"
+                          Square44x44Logo="Assets\Square44x44Logo.png"
+                          BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+      </uap:VisualElements>
+      <Extensions>
+        <!-- 시작 프로그램(사용자가 앱에서 켤 때만 활성화) -->
+        <uap5:Extension Category="windows.startupTask" Executable="JoyConMouse.exe" EntryPoint="Windows.FullTrustApplication">
+          <uap5:StartupTask TaskId="JoyConMouseStartup" Enabled="false" DisplayName="{{DisplayName}}" />
+        </uap5:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>

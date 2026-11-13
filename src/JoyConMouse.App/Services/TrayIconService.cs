@@ -31,9 +31,13 @@ public sealed partial class TrayIconService : IDisposable
         _statusItem = new ToolStripMenuItem { Enabled = false };
         _pauseItem = new ToolStripMenuItem(Strings.Get("Tray.Menu.Pause"), null, (_, _) => togglePause());
         _devicesItem = new ToolStripMenuItem(Strings.Get("Tray.Menu.ActiveDevice"));
-        _startupItem = new ToolStripMenuItem(Strings.Get("Tray.Menu.Startup"), null, (_, _) =>
+        _startupItem = new ToolStripMenuItem(Strings.Get("Tray.Menu.Startup"), null, async (_, _) =>
         {
-            StartupRegistration.Set(!StartupRegistration.IsRegistered);
+            string? message = await StartupRegistration.SetAsync(!StartupRegistration.IsRegistered);
+            if (message is not null)
+            {
+                ShowBalloon(message, ToolTipIcon.Warning);
+            }
         });
 
         _menu = new ContextMenuStrip();

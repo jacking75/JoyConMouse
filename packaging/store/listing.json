@@ -1,0 +1,52 @@
+{
+  "packageIdentityName": "jacking75.JoyConMouse",
+  "publisher": "CN=E66A7C98-9426-41DB-9B55-AC993F05E1A3",
+  "publisherDisplayName": "jacking75",
+  "fallbackName": "JoyCMouse",
+  "price": "Free",
+  "category": "Utilities & tools",
+  "website": "https://github.com/jacking75/JoyConMouse",
+  "support": "https://github.com/jacking75/JoyConMouse/issues",
+  "privacyPolicy": "https://github.com/jacking75/JoyConMouse/blob/main/docs/privacy.md",
+  "copyright": "Copyright (c) 2026 Choi HeungBae",
+  "ko-KR": {
+    "shortDescription": "조이콘 하나로 쓰는 한손 무선 마우스. 커서 이동·클릭·드래그·스크롤을 지원합니다.",
+    "description": "JoyConMouse는 Joy-Con 한 개를 Bluetooth로 PC에 연결해 한손 무선 마우스처럼 쓰게 해 주는 무료 오픈소스 앱입니다. 소파에서 문서를 읽거나, 책상 위에서 마우스를 움직이기 어려운 자세에서도 조이콘을 손에 쥔 채 PC를 조작할 수 있습니다.\n\n엄지 스틱으로 커서를 움직이고, 버튼으로 클릭·드래그·위아래·좌우 스크롤을 합니다. 왼쪽 조이콘과 오른쪽 조이콘을 모두 지원하며, 감도와 버튼 배치를 좌우별로 따로 저장합니다. 데드존과 미세 이동 곡선으로 작은 버튼도 정확히 누를 수 있습니다.\n\n창을 닫아도 트레이에서 계속 실행되고, 로그인 시 자동 실행을 선택할 수 있습니다. 연결이 끊기면 알려 주고, 일시정지·연결 해제·절전·화면 잠금 때는 눌린 버튼을 자동으로 풀어 입력이 남지 않게 합니다. 연결 확인 화면에서 모든 버튼과 스틱이 제대로 인식되는지 바로 확인할 수 있습니다.\n\n자이로 센서는 쓰지 않습니다. 앱 계정, 구독, 앱 내 구매, 네트워크 통신이 없습니다.\n\n지원 장치: 스위치 1용 정품 Joy-Con (L), Joy-Con (R). Windows 11 64비트, Bluetooth가 필요합니다.\n\nJoyConMouse는 닌텐도와 관계없는 독립 프로젝트입니다. Nintendo Switch와 Joy-Con은 Nintendo의 상표입니다.",
+    "features": [
+      "엄지 스틱으로 커서 이동, 데드존·미세 이동 조절",
+      "클릭·드래그·가운데 클릭, 네 방향 스크롤",
+      "왼쪽·오른쪽 Joy-Con 모두 지원, 좌우 설정 따로 저장",
+      "모든 버튼 기능 재지정, 연결 확인 화면",
+      "트레이 상주, 시작 프로그램, 연결 끊김 알림",
+      "무료 오픈소스, 계정·구독·네트워크 통신 없음"
+    ],
+    "keywords": ["조이콘", "마우스", "한손 마우스", "게임패드 마우스", "Joy-Con"],
+    "releaseNotes": "첫 공개 버전입니다.",
+    "screenshotCaptions": [
+      "감도·미세 이동·데드존을 좌우 조이콘별로 조절",
+      "모든 물리 버튼에 원하는 기능 지정",
+      "연결 확인 화면에서 버튼과 스틱 인식 확인"
+    ]
+  },
+  "en-US": {
+    "shortDescription": "Use one Joy-Con as a one-handed wireless mouse: move, click, drag, and scroll.",
+    "description": "JoyConMouse is a free, open-source app that turns a single Joy-Con connected over Bluetooth into a one-handed wireless mouse for your PC. Control your PC from the sofa or any position where using a desk mouse is awkward.\n\nMove the cursor with the thumbstick, and click, drag, and scroll vertically or horizontally with the buttons. Both the left and right Joy-Con are supported, with separate sensitivity and button layouts for each side. A dead zone and fine-movement curve let you hit even small targets precisely.\n\nIt keeps running in the system tray when you close the window, and can start automatically when you sign in. It notifies you when the controller disconnects, and releases any held buttons on pause, disconnect, sleep, or screen lock so no input gets stuck. The connection check screen shows instantly whether every button and the stick are recognized.\n\nNo gyro sensor is used. There is no account, subscription, in-app purchase, or network communication.\n\nSupported devices: genuine Joy-Con (L) and Joy-Con (R) for Nintendo Switch (1st generation). Requires Windows 11 64-bit and Bluetooth.\n\nJoyConMouse is an independent project and is not affiliated with Nintendo. Nintendo Switch and Joy-Con are trademarks of Nintendo.",
+    "features": [
+      "Move the cursor with the thumbstick, adjustable dead zone and fine movement",
+      "Click, drag, middle click, and four-way scrolling",
+      "Left and right Joy-Con supported with separate settings",
+      "Remap every button, built-in connection check",
+      "System tray, start at sign-in, disconnect notifications",
+      "Free and open source, no account or network communication"
+    ],
+    "keywords": ["Joy-Con", "mouse", "one-handed mouse", "controller mouse", "gamepad mouse"],
+    "releaseNotes": "First public release.",
+    "screenshotCaptions": [
+      "Adjust sensitivity, fine movement, and dead zone per Joy-Con",
+      "Assign any function to every physical button",
+      "Check button and stick recognition on the connection check screen"
+    ]
+  },
+  "notesForCertification": "JoyConMouse converts input from a Nintendo Switch Joy-Con paired over Windows Bluetooth into mouse input. Without a Joy-Con the app starts normally and shows 'Please connect a Joy-Con'; settings, button remapping, tray menu and start-at-sign-in can still be tested. With a Joy-Con: pair it in Settings > Bluetooth & devices (hold the small Sync button on the rail), launch the app, hold the Joy-Con vertically and move the stick to move the cursor; ZL/ZR = left click, L/R = right click. Closing the window keeps the app in the system tray; use the tray menu 'Exit' to quit. The UI language is Korean.",
+  "runFullTrustJustification": "JoyConMouse is a desktop (WPF) utility that must run as a full-trust process. It reads Bluetooth HID game controller input (Joy-Con) through the SDL library and injects mouse movement, clicks and scrolling into the desktop with the Win32 SendInput API so that any application can be controlled. It also runs in the system tray and must keep receiving controller input while other apps are in the foreground. These require the runFullTrust capability."
+}
