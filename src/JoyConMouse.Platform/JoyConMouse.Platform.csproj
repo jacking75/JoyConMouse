@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net11.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- 빌드 출력은 저장소 루트 bins\ 에 모으고 .NET 버전 하위 폴더는 만들지 않는다. -->
+    <OutputPath>$(MSBuildThisFileDirectory)..\..\bins\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JoyConMouse.Core\JoyConMouse.Core.csproj" />
+  </ItemGroup>
+
+  <!-- SDL3 네이티브 바이너리. build/fetch-sdl.ps1 로 native/win-x64 에 받아 둔다.
+       참조하는 프로젝트(App)의 출력·게시 폴더에도 함께 복사된다. -->
+  <PropertyGroup>
+    <SdlNativeDir>$(MSBuildThisFileDirectory)..\..\native\win-x64\</SdlNativeDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(SdlNativeDir)SDL3.dll" Link="SDL3.dll" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" Visible="false" />
+  </ItemGroup>
+  <Target Name="CheckSdlNative" BeforeTargets="BeforeBuild">
+    <Error Condition="!Exists('$(SdlNativeDir)SDL3.dll')" Text="native\win-x64\SDL3.dll 이 없습니다. build/fetch-sdl.ps1 을 먼저 실행하세요." />
+  </Target>
+
+</Project>

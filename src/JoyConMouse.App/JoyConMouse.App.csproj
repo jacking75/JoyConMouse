@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net11.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- 빌드 출력은 저장소 루트 bins\ 에 모으고 .NET 버전 하위 폴더는 만들지 않는다. -->
+    <OutputPath>$(MSBuildThisFileDirectory)..\..\bins\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <RootNamespace>JoyConMouse.App</RootNamespace>
+    <AssemblyName>JoyConMouse</AssemblyName>
+    <!-- 배포 버전. build/publish.ps1 이 이 값을 읽어 zip 이름에 쓴다. -->
+    <Version>0.1.0</Version>
+    <Company>JoyConMouse</Company>
+    <Product>JoyConMouse</Product>
+    <NeutralLanguage>ko-KR</NeutralLanguage>
+    <!-- 런타임·WPF의 다른 언어 리소스 폴더를 배포본에 넣지 않는다. -->
+    <SatelliteResourceLanguages>ko</SatelliteResourceLanguages>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\JoyConMouse.ico</ApplicationIcon>
+    <AssemblyTitle>JoyConMouse</AssemblyTitle>
+    <Description>조이콘 하나로 쓰는 한손 무선 마우스 (닌텐도와 관계없는 독립 프로젝트)</Description>
+    <Copyright>Copyright (c) 2026 Choi HeungBae. MIT License.</Copyright>
+    <!-- WFO0003: WinForms 앱용 권고(매니페스트 대신 SetHighDpiMode). 이 앱은 WPF 앱이고
+         WinForms 는 트레이 아이콘만 쓰므로 DPI 인식은 매니페스트로 선언한다. -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+  </PropertyGroup>
+
+  <!-- WinForms 는 트레이(NotifyIcon)용으로만 쓴다. 전역 using 충돌을 막기 위해 WinForms 네임스페이스는 암시적 using 에서 뺀다. -->
+  <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+  </ItemGroup>
+
+  <!-- 트레이 상태 아이콘의 바탕(앱 아이콘 원본) -->
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\icon.png" LogicalName="JoyConMouse.icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JoyConMouse.Core\JoyConMouse.Core.csproj" />
+    <ProjectReference Include="..\JoyConMouse.Platform\JoyConMouse.Platform.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- 빌드 출력은 저장소 루트 bins\ 에 모으고 .NET 버전 하위 폴더는 만들지 않는다. -->
+    <OutputPath>$(MSBuildThisFileDirectory)..\..\bins\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="JoyConMouseCoreTests" />
+  </ItemGroup>
+
+</Project>

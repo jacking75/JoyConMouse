@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/JoyConMouse.Core/JoyConMouse.Core.csproj" />
+    <Project Path="src/JoyConMouse.Platform/JoyConMouse.Platform.csproj" />
+    <Project Path="src/JoyConMouse.App/JoyConMouse.App.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/JoyConMouse.Core.Tests/JoyConMouse.Core.Tests.csproj" />
+  </Folder>
+</Solution>
