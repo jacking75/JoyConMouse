@@ -2,7 +2,9 @@
 .SYNOPSIS
     Windows x64 배포 zip 을 만든다: artifacts/JoyConMouse-<버전>-win-x64.zip
 .DESCRIPTION
-    self-contained 폴더 배포(단일 파일 아님)로 SDL3.dll 을 exe 옆에 그대로 둔다.
+    self-contained 단일 파일(JoyConMouse.exe) + ReadyToRun 으로 게시한다.
+    WPF·WinForms 는 Native AOT 를 지원하지 않아 AOT 대신 ReadyToRun 으로 시작 속도를 확보한다.
+    네이티브 DLL(SDL3.dll, WPF 네이티브 DLL)은 exe 에 넣지 않고 옆에 둔다(임시 폴더 추출 없음).
     LICENSE, THIRD-PARTY-NOTICES.txt, 사용 안내를 함께 넣는다.
     Windows PowerShell 5.1 과 PowerShell 7 모두에서 동작한다.
 .EXAMPLE
@@ -41,6 +43,7 @@ try {
     #    CS0006/MSB3030 으로 실패하므로, 매번 깨끗한 상태에서 빌드한다.
     Clear-ProjectBuildState $repoRoot
     & dotnet publish src/JoyConMouse.App/JoyConMouse.App.csproj -c Release -r win-x64 --self-contained true `
+        -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=false `
         -p:PublishReadyToRun=true -p:PackagingBuild=true -o $outDir
     if ($LASTEXITCODE -ne 0) { throw "dotnet publish 실패" }
 
@@ -50,6 +53,10 @@ try {
     if (-not (Test-Path (Join-Path $outDir 'SDL3.dll'))) { throw "SDL3.dll 이 없습니다." }
     $badExe = Get-ChildItem $outDir -Filter '*.exe' | Where-Object { $_.BaseName.Contains('.') }
     if ($badExe) { throw "exe 이름 규칙 위반: $($badExe.Name -join ', ')" }
+    # 단일 파일 게시라면 관리 어셈블리(.dll)는 exe 에 들어가고, 옆에는 네이티브 DLL 만 남는다.
+    if (Test-Path (Join-Path $outDir 'JoyConMouse.dll')) { throw "단일 파일로 게시되지 않았습니다(JoyConMouse.dll 이 따로 있음)." }
+    # 디버그 기호는 배포본에 넣지 않는다.
+    Get-ChildItem $outDir -Filter '*.pdb' | Remove-Item -Force
 
     # 5. 고지·안내 문서
     Copy-Item (Join-Path $repoRoot 'LICENSE') (Join-Path $outDir 'LICENSE.txt')
